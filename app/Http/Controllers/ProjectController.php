@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Services\CreateProject;
 use Illuminate\Http\Request;
 
 class ProjectController
@@ -14,9 +15,9 @@ class ProjectController
         return response()->json($projects, 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, CreateProject $createProject)
     {
-        $project = new Project();
+        $img_path = null;
 
         if ($request->hasFile('img_path')) {
             $file = $request->file('img_path');
@@ -29,15 +30,18 @@ class ProjectController
                 $file->move('assets/images', $filename);
                 $filepath = 'assets/images/' . $filename;
 
-                $project->img_path = $filepath;
+                $img_path = $filepath;
             }
         }
 
-        $project->title = $request->title;
-        $project->description = $request->description;
-        $project->repo = $request->repo;
-        $project->demo = $request->demo;
-        $project->save();
+        $project = $createProject->create(
+            $img_path,
+            $request->title,
+            $request->description,
+            $request->repo,
+            $request->demo,
+            $request->languages
+        );
 
         return response()->json($project, 201);
     }

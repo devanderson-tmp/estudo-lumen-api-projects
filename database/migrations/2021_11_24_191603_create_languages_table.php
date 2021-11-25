@@ -15,7 +15,7 @@ class CreateLanguagesTable extends Migration
     {
         Schema::create('languages', function (Blueprint $table) {
             $table->tinyIncrements('id');
-            $table->string('name', 50)->unique();
+            $table->string('name', 50);
             $table->integer('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
         });
