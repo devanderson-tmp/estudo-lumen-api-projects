@@ -17,4 +17,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('projects', 'ProjectController@index');
     $router->post('projects', 'ProjectController@store');
     $router->get('projects/{id}', 'ProjectController@show');
+
+    $router->get('projects/{id}/languages', 'LanguageController@index');
 });
