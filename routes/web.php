@@ -14,12 +14,13 @@
 */
 
 $router->group(['prefix' => 'api', 'middleware' => 'customAuth'], function () use ($router) {
-    $router->get('projects', 'ProjectController@index');
     $router->post('projects', 'ProjectController@store');
-    $router->get('projects/{id}', 'ProjectController@show');
-
-    $router->get('projects/{id}/languages', 'LanguageController@index');
-
 });
 
-$router->post('api/login', 'TokenController@generate');
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->post('login', 'TokenController@generate');
+    $router->get('projects', 'ProjectController@index');
+    $router->get('projects/{id}', 'ProjectController@show');
+    $router->get('projects/{id}/languages', 'LanguageController@index');
+});
+
