@@ -24,3 +24,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('projects/{id}/languages', 'LanguageController@index');
 });
 
+$router->get('/', function () {
+    return [
+        'projects' => 'https://devanderson-projetos.herokuapp.com/api/projects'
+    ];
+});
