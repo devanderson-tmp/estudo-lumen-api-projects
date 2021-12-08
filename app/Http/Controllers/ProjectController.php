@@ -24,7 +24,7 @@ class ProjectController
             $filename = $file->getClientOriginalName();
             $fileExtension = $file->getClientOriginalExtension();
 
-            $allowedExtensions = ['png'];
+            $allowedExtensions = ['jpg', 'png'];
 
             if (in_array($fileExtension, $allowedExtensions)) {
                 $file->move('assets/images', $filename);
