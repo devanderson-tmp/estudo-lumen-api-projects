@@ -15,6 +15,7 @@
 
 $router->group(['prefix' => 'api', 'middleware' => 'customAuth'], function () use ($router) {
     $router->post('projects', 'ProjectController@store');
+    $router->delete('projects/{id}', 'ProjectController@destroy');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {

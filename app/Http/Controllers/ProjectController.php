@@ -54,4 +54,21 @@ class ProjectController
 
         return response()->json($project, 200);
     }
+
+    public function destroy(int $id)
+    {
+        $project = Project::find($id);
+
+        if ($project) {
+            if (file_exists($project->img_path)) {
+                unlink($project->img_path);
+            }
+
+            Project::destroy($project->id);
+
+            return response()->json('', 204);
+        } else {
+            return response()->json('Project not found', 404);
+        }
+    }
 }
