@@ -55,6 +55,38 @@ class ProjectController
         return response()->json($project, 200);
     }
 
+    public function update(int $id, Request $request)
+    {
+        $project = Project::find($id);
+        $data = $request->all();
+
+        if (is_null($project)) return response()->json('Project not found', 404);
+
+        if ($request->hasFile('img_path')) {
+            if (file_exists($project->img_path)) {
+                unlink($project->img_path);
+            }
+
+            $file = $request->file('img_path');
+            $filename = $file->getClientOriginalName();
+            $fileExtension = $file->getClientOriginalExtension();
+
+            $allowedExtensions = ['jpg', 'png'];
+
+            if (in_array($fileExtension, $allowedExtensions)) {
+                $file->move('assets/images', $filename);
+                $filepath = 'assets/images/' . $filename;
+
+                $data['img_path'] = $filepath;
+            }
+        }
+
+        $project->fill($data);
+        $project->save();
+
+        return response()->json($project, 200);
+    }
+
     public function destroy(int $id)
     {
         $project = Project::find($id);
