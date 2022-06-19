@@ -17,6 +17,19 @@ class ProjectController
 
     public function store(Request $request, CreateProject $createProject)
     {
+        $img_path = null;
+
+        if ($request->has('img_path')) {
+            $file = $request->file('img_path');
+            $fileExtension = $file->getClientOriginalExtension();
+
+            $allowedExtensions = ['jpg', 'png'];
+
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                return response()->json('File format not supported', 415);
+            }
+        }
+
         $project = $createProject->create(
             $request->img_path,
             $request->title,
