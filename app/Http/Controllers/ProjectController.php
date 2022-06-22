@@ -17,10 +17,10 @@ class ProjectController
 
     public function store(Request $request, CreateProject $createProject)
     {
-        $img_path = null;
+        $image = null;
 
-        if ($request->has('img_path')) {
-            $file = $request->file('img_path');
+        if ($request->has('image')) {
+            $file = $request->file('image');
             $fileExtension = $file->getClientOriginalExtension();
 
             $allowedExtensions = ['jpg', 'png'];
@@ -31,7 +31,7 @@ class ProjectController
         }
 
         $project = $createProject->create(
-            $request->img_path,
+            $request->image,
             $request->title,
             $request->description,
             $request->repo,

@@ -15,7 +15,7 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->tinyIncrements('id');
-            $table->string('img_path')->nullable();
+            $table->string('image')->nullable();
             $table->string('title', 100)->unique();
             $table->text('description');
             $table->string('repo');

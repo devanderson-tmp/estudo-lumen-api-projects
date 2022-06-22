@@ -6,7 +6,7 @@ Projeto pessoal de estudo, cuja finalidade é salvar projetos em um banco de dad
 | Campo | Tipo | Descrição |
 | --- | --- | --- |
 | id  | int  | O id do projeto |
-| img_path | string | Link para a imagem do projeto |
+| image | string | Link para a imagem do projeto |
 | title | string | O título do projeto |
 | description | string | A descrição do projeto |
 | repo | string | Link para o repositório do projeto |

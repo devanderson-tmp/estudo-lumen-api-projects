@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['img_path', 'title', 'description', 'repo', 'demo'];
+    protected $fillable = ['image', 'title', 'description', 'repo', 'demo'];
     protected $appends = ['languages'];
     public $timestamps = false;
 

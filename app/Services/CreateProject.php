@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 class CreateProject
 {
-    public function create(?string $img_path, string $title, ?string $description, string $repo, ?string $demo, array $languages): Project
+    public function create(?string $image, string $title, ?string $description, string $repo, ?string $demo, array $languages): Project
     {
         $project = null;
 
         DB::beginTransaction();
         $project = Project::create([
-            'img_path' => $img_path,
+            'image' => $image,
             'title' => $title,
             'description' => $description,
             'repo' => $repo,
