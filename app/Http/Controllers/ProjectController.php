@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Services\CreateProject;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 
 class ProjectController
@@ -28,10 +30,29 @@ class ProjectController
             if (!in_array($fileExtension, $allowedExtensions)) {
                 return response()->json('File format not supported', 415);
             }
+
+            $client = new Client(['base_uri' => 'https://api.imgbb.com/1/']);
+
+            try {
+                $response = $client->post(
+                    'upload',
+                    [
+                        'form_params' => [
+                            'image' => base64_encode(file_get_contents($file)),
+                            'key' => env('IMGBB_KEY')
+                        ]
+                    ]
+                );
+
+                $image = json_decode($response->getBody()->getContents())->data->url;
+            } catch (ClientException $e) {
+                $message = json_decode($e->getResponse()->getBody()->getContents())->error->message;
+                return response()->json($message, $e->getCode());
+            }
         }
 
         $project = $createProject->create(
-            $request->image,
+            $image,
             $request->title,
             $request->description,
             $request->repo,
