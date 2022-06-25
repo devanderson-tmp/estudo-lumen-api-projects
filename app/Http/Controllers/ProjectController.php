@@ -12,22 +12,23 @@ class ProjectController
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::all(['id', 'image', 'title', 'description', 'repo', 'demo']);
 
-        return response()->json($projects, 200);
+        return response()->json($projects);
     }
 
     public function store(Request $request, CreateProject $createProject)
     {
         $image = null;
+        $image_delete_url = null;
 
         if ($request->has('image')) {
             $file = $request->file('image');
-            $fileExtension = $file->getClientOriginalExtension();
+            $file_extension = $file->getClientOriginalExtension();
 
-            $allowedExtensions = ['jpg', 'png'];
+            $allowed_extensions = ['jpg', 'png'];
 
-            if (!in_array($fileExtension, $allowedExtensions)) {
+            if (!in_array($file_extension, $allowed_extensions)) {
                 return response()->json('File format not supported', 415);
             }
 
@@ -44,7 +45,9 @@ class ProjectController
                     ]
                 );
 
-                $image = json_decode($response->getBody()->getContents())->data->url;
+                $data = json_decode($response->getBody()->getContents())->data;
+                $image = $data->url;
+                $image_delete_url = $data->delete_url;
             } catch (ClientException $e) {
                 $message = json_decode($e->getResponse()->getBody()->getContents())->error->message;
                 return response()->json($message, $e->getCode());
@@ -53,6 +56,7 @@ class ProjectController
 
         $project = $createProject->create(
             $image,
+            $image_delete_url,
             $request->title,
             $request->description,
             $request->repo,
@@ -69,7 +73,7 @@ class ProjectController
 
         if (is_null($project)) return response()->json('Project not found', 404);
 
-        return response()->json($project, 200);
+        return response()->json($project);
     }
 
     public function update(int $id, Request $request)
@@ -81,7 +85,7 @@ class ProjectController
         $project->fill($request->all());
         $project->save();
 
-        return response()->json($project, 200);
+        return response()->json($project);
     }
 
     public function destroy(int $id)
@@ -95,5 +99,10 @@ class ProjectController
         } else {
             return response()->json('Project not found', 404);
         }
+    }
+
+    public function privateProjects()
+    {
+        return response()->json(Project::all());
     }
 }

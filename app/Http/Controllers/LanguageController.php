@@ -10,6 +10,6 @@ class LanguageController
     {
         $languages = Language::query()->where('project_id', $id)->get('name');
 
-        return response()->json($languages, 200);
+        return response()->json($languages);
     }
 }

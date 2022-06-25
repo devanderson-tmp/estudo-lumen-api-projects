@@ -14,6 +14,7 @@
 */
 
 $router->group(['prefix' => 'api', 'middleware' => 'customAuth'], function () use ($router) {
+    $router->get('private-projects', 'ProjectController@privateProjects');
     $router->post('projects', 'ProjectController@store');
     $router->put('projects/{id}', 'ProjectController@update');
     $router->delete('projects/{id}', 'ProjectController@destroy');
